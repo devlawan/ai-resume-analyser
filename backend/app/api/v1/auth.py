@@ -17,7 +17,9 @@ from app.schemas.auth import (
     TokenResponse
 )
 
-from app.repositories.user_repository import UserRepository
+from app.repositories.user_repository import (
+    UserRepository
+)
 
 from app.repositories.resume_repository import (
     ResumeRepository
@@ -35,6 +37,10 @@ from app.api.deps import get_current_user
 
 from app.services.pdf_parser import (
     PDFParserService
+)
+
+from app.services.ats_service import (
+    ATSService
 )
 
 
@@ -177,8 +183,6 @@ def upload_resume(
     parsed_text = PDFParserService.extract_text(
         file_path
     )
-    print(parsed_text)
-
 
     ResumeRepository.update_resume_text(
         db,
@@ -186,8 +190,21 @@ def upload_resume(
         parsed_text
     )
 
+    analysis = ATSService.analyze_resume(
+        parsed_text
+    )
+
+    ResumeRepository.update_resume_analysis(
+        db,
+        resume,
+        analysis
+    )
+
     return {
         "message": "Resume uploaded successfully",
         "resume_id": str(resume.id),
-        "file_name": resume.file_name
+        "file_name": resume.file_name,
+        "ats_score": analysis["ats_score"],
+        "skills": analysis["skills"],
+        "missing_skills": analysis["missing_skills"]
     }

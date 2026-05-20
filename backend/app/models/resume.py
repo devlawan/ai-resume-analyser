@@ -7,6 +7,9 @@ from app.db.base import Base
 
 from sqlalchemy import Text
 
+from sqlalchemy import Integer
+from sqlalchemy.dialects.postgresql import JSONB
+
 class Resume(Base):
 
     __tablename__ = "resumes"
@@ -35,4 +38,19 @@ class Resume(Base):
     parsed_text = Column(
     Text,
     nullable=True
+    )
+
+    ats_score = Column(
+    Integer,
+    nullable=True
+    )
+
+    skills = Column(
+        JSONB,
+        nullable=True
+    )
+
+    missing_skills = Column(
+        JSONB,
+        nullable=True
     )

@@ -35,3 +35,24 @@ class ResumeRepository:
         db.refresh(resume)
 
         return resume
+
+    @staticmethod
+    def update_resume_analysis(
+        db: Session,
+        resume: Resume,
+        analysis: dict
+    ):
+
+        resume.ats_score = analysis["ats_score"]
+
+        resume.skills = analysis["skills"]
+
+        resume.missing_skills = analysis[
+            "missing_skills"
+        ]
+
+        db.commit()
+
+        db.refresh(resume)
+
+        return resume
