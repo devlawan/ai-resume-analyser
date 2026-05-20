@@ -111,8 +111,7 @@ PostgreSQL Database
 ## Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ai-resume-analyzer.git
-```
+git clone https://github.com/devlawan/ai-resume-analyser.git```
 
 ---
 
