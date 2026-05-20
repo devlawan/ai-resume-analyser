@@ -42,8 +42,6 @@ function Login() {
                 response.data.access_token
             )
 
-            alert("Login successful")
-
             navigate("/dashboard")
 
         } catch (error: any) {
@@ -64,122 +62,148 @@ function Login() {
     return (
 
         <div
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh",
-                backgroundColor: "#f4f4f4"
-            }}
+            className="
+                min-h-screen
+                flex
+                items-center
+                justify-center
+                bg-slate-950
+                px-4
+            "
         >
 
             <div
-                style={{
-                    width: "350px",
-                    padding: "30px",
-                    backgroundColor: "white",
-                    borderRadius: "10px",
-                    boxShadow:
-                        "0 0 10px rgba(0,0,0,0.1)"
-                }}
+                className="
+                    w-full
+                    max-w-md
+                    bg-slate-900
+                    border
+                    border-slate-800
+                    rounded-2xl
+                    p-8
+                    shadow-2xl
+                "
             >
 
-                <h1
-                    style={{
-                        textAlign: "center",
-                        marginBottom: "20px"
-                    }}
+                <div className="text-center mb-8">
+
+                    <h1
+                        className="
+                            text-4xl
+                            font-bold
+                            text-white
+                            mb-2
+                        "
+                    >
+                        AI Resume Analyzer
+                    </h1>
+
+                    <p
+                        className="
+                            text-slate-400
+                        "
+                    >
+                        Analyze resumes with AI
+                    </p>
+
+                </div>
+
+
+                <div className="space-y-5">
+
+                    <input
+                        type="email"
+                        placeholder="Enter email"
+                        value={email}
+                        onChange={(e) =>
+                            setEmail(e.target.value)
+                        }
+                        className="
+                            w-full
+                            p-4
+                            rounded-xl
+                            bg-slate-800
+                            border
+                            border-slate-700
+                            text-white
+                            outline-none
+                            focus:border-blue-500
+                        "
+                    />
+
+
+                    <input
+                        type="password"
+                        placeholder="Enter password"
+                        value={password}
+                        onChange={(e) =>
+                            setPassword(e.target.value)
+                        }
+                        className="
+                            w-full
+                            p-4
+                            rounded-xl
+                            bg-slate-800
+                            border
+                            border-slate-700
+                            text-white
+                            outline-none
+                            focus:border-blue-500
+                        "
+                    />
+
+
+                    <button
+                        onClick={handleLogin}
+                        disabled={loading}
+                        className="
+                            w-full
+                            bg-blue-600
+                            hover:bg-blue-700
+                            transition
+                            text-white
+                            p-4
+                            rounded-xl
+                            font-semibold
+                        "
+                    >
+
+                        {
+                            loading
+                                ? "Logging in..."
+                                : "Login"
+                        }
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    className="
+                        mt-6
+                        text-center
+                        text-slate-400
+                    "
                 >
-                    AI Resume Analyzer
-                </h1>
 
-                <h2
-                    style={{
-                        textAlign: "center",
-                        marginBottom: "20px"
-                    }}
-                >
-                    Login
-                </h2>
-
-                <input
-                    type="email"
-                    placeholder="Enter email"
-                    value={email}
-                    onChange={(e) =>
-                        setEmail(e.target.value)
-                    }
-                    style={{
-                        width: "100%",
-                        padding: "10px",
-                        marginBottom: "15px",
-                        borderRadius: "5px",
-                        border: "1px solid #ccc"
-                    }}
-                />
-
-                <input
-                    type="password"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) =>
-                        setPassword(e.target.value)
-                    }
-                    style={{
-                        width: "100%",
-                        padding: "10px",
-                        marginBottom: "20px",
-                        borderRadius: "5px",
-                        border: "1px solid #ccc"
-                    }}
-                />
-
-                <button
-                    onClick={handleLogin}
-                    disabled={loading}
-                    style={{
-                        width: "100%",
-                        padding: "12px",
-                        border: "none",
-                        borderRadius: "5px",
-                        backgroundColor: "#2563eb",
-                        color: "white",
-                        fontSize: "16px",
-                        cursor: "pointer"
-                    }}
-                >
-
-                    {
-                        loading
-                            ? "Logging in..."
-                            : "Login"
-                    }
-
-                </button>
-
-                <p
-                    style={{
-                        marginTop: "20px",
-                        textAlign: "center"
-                    }}
-                >
                     Don't have an account?
-
-                    {" "}
 
                     <span
                         onClick={() =>
                             navigate("/register")
                         }
-                        style={{
-                            color: "#2563eb",
-                            cursor: "pointer",
-                            fontWeight: "bold"
-                        }}
+                        className="
+                            text-blue-500
+                            ml-2
+                            cursor-pointer
+                            font-semibold
+                        "
                     >
                         Register
                     </span>
-                </p>
+
+                </div>
 
             </div>
 

@@ -1,9 +1,13 @@
 import { useState } from "react"
 
+import { useNavigate } from "react-router-dom"
+
 import api from "../api/client"
 
 
 function Dashboard() {
+
+    const navigate = useNavigate()
 
     const [file, setFile] = useState<File | null>(
         null
@@ -68,47 +72,105 @@ function Dashboard() {
     }
 
 
+    const handleLogout = () => {
+
+        localStorage.removeItem("token")
+
+        navigate("/")
+    }
+
+
     return (
 
         <div
-            style={{
-                minHeight: "100vh",
-                backgroundColor: "#f5f7fb",
-                padding: "40px"
-            }}
+            className="
+                min-h-screen
+                bg-slate-950
+                text-white
+            "
         >
 
             <div
-                style={{
-                    maxWidth: "1000px",
-                    margin: "0 auto"
-                }}
+                className="
+                    border-b
+                    border-slate-800
+                    px-8
+                    py-5
+                    flex
+                    justify-between
+                    items-center
+                "
             >
 
-                <h1
-                    style={{
-                        textAlign: "center",
-                        marginBottom: "40px"
-                    }}
-                >
-                    AI Resume Analyzer
-                </h1>
+                <div>
 
+                    <h1
+                        className="
+                            text-2xl
+                            font-bold
+                        "
+                    >
+                        AI Resume Analyzer
+                    </h1>
+
+                    <p
+                        className="
+                            text-slate-400
+                            text-sm
+                        "
+                    >
+                        Analyze resumes with AI
+                    </p>
+
+                </div>
+
+
+                <button
+                    onClick={handleLogout}
+                    className="
+                        bg-red-500
+                        hover:bg-red-600
+                        px-5
+                        py-2
+                        rounded-lg
+                        transition
+                    "
+                >
+                    Logout
+                </button>
+
+            </div>
+
+
+            <div
+                className="
+                    max-w-6xl
+                    mx-auto
+                    p-8
+                "
+            >
 
                 <div
-                    style={{
-                        backgroundColor: "white",
-                        padding: "30px",
-                        borderRadius: "12px",
-                        boxShadow:
-                            "0 0 10px rgba(0,0,0,0.1)",
-                        marginBottom: "30px"
-                    }}
+                    className="
+                        bg-slate-900
+                        border
+                        border-slate-800
+                        rounded-2xl
+                        p-8
+                        mb-8
+                    "
                 >
 
-                    <h2>
+                    <h2
+                        className="
+                            text-2xl
+                            font-bold
+                            mb-6
+                        "
+                    >
                         Upload Resume
                     </h2>
+
 
                     <input
                         type="file"
@@ -122,23 +184,28 @@ function Dashboard() {
                                 )
                             }
                         }}
+                        className="
+                            mb-6
+                            block
+                            w-full
+                            text-sm
+                            text-slate-300
+                        "
                     />
 
-                    <br />
-                    <br />
 
                     <button
                         onClick={handleUpload}
                         disabled={loading}
-                        style={{
-                            padding: "12px 20px",
-                            border: "none",
-                            borderRadius: "8px",
-                            backgroundColor: "#2563eb",
-                            color: "white",
-                            cursor: "pointer",
-                            fontSize: "16px"
-                        }}
+                        className="
+                            bg-blue-600
+                            hover:bg-blue-700
+                            transition
+                            px-6
+                            py-3
+                            rounded-xl
+                            font-semibold
+                        "
                     >
 
                         {
@@ -155,28 +222,36 @@ function Dashboard() {
                 {
                     result && (
 
-                        <div>
+                        <div
+                            className="
+                                space-y-8
+                            "
+                        >
 
                             <div
-                                style={{
-                                    backgroundColor: "white",
-                                    padding: "30px",
-                                    borderRadius: "12px",
-                                    boxShadow:
-                                        "0 0 10px rgba(0,0,0,0.1)",
-                                    marginBottom: "20px"
-                                }}
+                                className="
+                                    bg-gradient-to-r
+                                    from-blue-600
+                                    to-cyan-500
+                                    rounded-2xl
+                                    p-8
+                                "
                             >
 
-                                <h2>
+                                <h2
+                                    className="
+                                        text-2xl
+                                        mb-2
+                                    "
+                                >
                                     ATS Score
                                 </h2>
 
                                 <h1
-                                    style={{
-                                        color: "#2563eb",
-                                        fontSize: "48px"
-                                    }}
+                                    className="
+                                        text-7xl
+                                        font-bold
+                                    "
                                 >
                                     {result.ats_score}%
                                 </h1>
@@ -185,31 +260,40 @@ function Dashboard() {
 
 
                             <div
-                                style={{
-                                    display: "grid",
-                                    gridTemplateColumns:
-                                        "1fr 1fr",
-                                    gap: "20px",
-                                    marginBottom: "20px"
-                                }}
+                                className="
+                                    grid
+                                    md:grid-cols-2
+                                    gap-6
+                                "
                             >
 
                                 <div
-                                    style={{
-                                        backgroundColor:
-                                            "white",
-                                        padding: "20px",
-                                        borderRadius: "12px",
-                                        boxShadow:
-                                            "0 0 10px rgba(0,0,0,0.1)"
-                                    }}
+                                    className="
+                                        bg-slate-900
+                                        border
+                                        border-slate-800
+                                        rounded-2xl
+                                        p-6
+                                    "
                                 >
 
-                                    <h2>
+                                    <h2
+                                        className="
+                                            text-2xl
+                                            font-bold
+                                            mb-4
+                                        "
+                                    >
                                         Skills
                                     </h2>
 
-                                    <ul>
+                                    <div
+                                        className="
+                                            flex
+                                            flex-wrap
+                                            gap-3
+                                        "
+                                    >
 
                                         {
                                             result.skills.map(
@@ -217,36 +301,55 @@ function Dashboard() {
                                                     skill: string
                                                 ) => (
 
-                                                    <li
+                                                    <div
                                                         key={skill}
+                                                        className="
+                                                            bg-green-500/20
+                                                            text-green-400
+                                                            px-4
+                                                            py-2
+                                                            rounded-full
+                                                            text-sm
+                                                        "
                                                     >
                                                         {skill}
-                                                    </li>
+                                                    </div>
                                                 )
                                             )
                                         }
 
-                                    </ul>
+                                    </div>
 
                                 </div>
 
 
                                 <div
-                                    style={{
-                                        backgroundColor:
-                                            "white",
-                                        padding: "20px",
-                                        borderRadius: "12px",
-                                        boxShadow:
-                                            "0 0 10px rgba(0,0,0,0.1)"
-                                    }}
+                                    className="
+                                        bg-slate-900
+                                        border
+                                        border-slate-800
+                                        rounded-2xl
+                                        p-6
+                                    "
                                 >
 
-                                    <h2>
+                                    <h2
+                                        className="
+                                            text-2xl
+                                            font-bold
+                                            mb-4
+                                        "
+                                    >
                                         Missing Skills
                                     </h2>
 
-                                    <ul>
+                                    <div
+                                        className="
+                                            flex
+                                            flex-wrap
+                                            gap-3
+                                        "
+                                    >
 
                                         {
                                             result.missing_skills.map(
@@ -254,16 +357,24 @@ function Dashboard() {
                                                     skill: string
                                                 ) => (
 
-                                                    <li
+                                                    <div
                                                         key={skill}
+                                                        className="
+                                                            bg-red-500/20
+                                                            text-red-400
+                                                            px-4
+                                                            py-2
+                                                            rounded-full
+                                                            text-sm
+                                                        "
                                                     >
                                                         {skill}
-                                                    </li>
+                                                    </div>
                                                 )
                                             )
                                         }
 
-                                    </ul>
+                                    </div>
 
                                 </div>
 
@@ -271,26 +382,31 @@ function Dashboard() {
 
 
                             <div
-                                style={{
-                                    backgroundColor:
-                                        "white",
-                                    padding: "30px",
-                                    borderRadius: "12px",
-                                    boxShadow:
-                                        "0 0 10px rgba(0,0,0,0.1)"
-                                }}
+                                className="
+                                    bg-slate-900
+                                    border
+                                    border-slate-800
+                                    rounded-2xl
+                                    p-8
+                                "
                             >
 
-                                <h2>
+                                <h2
+                                    className="
+                                        text-2xl
+                                        font-bold
+                                        mb-6
+                                    "
+                                >
                                     AI Feedback
                                 </h2>
 
                                 <pre
-                                    style={{
-                                        whiteSpace:
-                                            "pre-wrap",
-                                        lineHeight: "1.6"
-                                    }}
+                                    className="
+                                        whitespace-pre-wrap
+                                        leading-8
+                                        text-slate-300
+                                    "
                                 >
                                     {
                                         result.ai_feedback
