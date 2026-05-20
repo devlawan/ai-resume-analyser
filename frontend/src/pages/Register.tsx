@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { useNavigate } from "react-router-dom"
 
@@ -16,6 +16,20 @@ function Register() {
     const [password, setPassword] = useState("")
 
     const [loading, setLoading] = useState(false)
+
+
+    useEffect(() => {
+
+        const token = localStorage.getItem(
+            "token"
+        )
+
+        if (token) {
+
+            navigate("/dashboard")
+        }
+
+    }, [])
 
 
     const handleRegister = async () => {
@@ -189,6 +203,7 @@ function Register() {
                             w-full
                             bg-blue-600
                             hover:bg-blue-700
+                            disabled:bg-blue-400
                             transition
                             text-white
                             p-4
@@ -227,6 +242,7 @@ function Register() {
                             ml-2
                             cursor-pointer
                             font-semibold
+                            hover:text-blue-400
                         "
                     >
                         Login
