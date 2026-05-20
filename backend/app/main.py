@@ -8,12 +8,15 @@ from app.api.v1.auth import (
     router as auth_router
 )
 
-app = FastAPI()
+app = FastAPI(
+    title="AI Resume Analyzer API"
+)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "https://ai-resume-analyser-opal.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -30,5 +33,5 @@ app.include_router(
 def root():
 
     return {
-        "message": "AI Resume Analyzer API"
+        "message": "AI Resume Analyzer API is running"
     }
