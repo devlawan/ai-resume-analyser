@@ -146,6 +146,34 @@ def get_me(
     }
 
 
+@router.get("/my-resumes")
+def get_my_resumes(
+    current_user = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+
+    resumes = ResumeRepository.get_user_resumes(
+        db,
+        current_user.id
+    )
+
+    return [
+
+        {
+            "id": str(resume.id),
+            "file_name": resume.file_name,
+            "ats_score": resume.ats_score,
+            "skills": resume.skills,
+            "missing_skills":
+                resume.missing_skills
+        }
+
+        for resume in resumes
+
+        if resume.ats_score is not None
+    ]
+
+
 @router.post("/upload-resume")
 def upload_resume(
     file: UploadFile = File(...),

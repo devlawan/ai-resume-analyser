@@ -1,6 +1,16 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { useNavigate } from "react-router-dom"
+
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    Tooltip,
+    ResponsiveContainer,
+    CartesianGrid
+} from "recharts"
 
 import api from "../api/client"
 
@@ -18,6 +28,45 @@ function Dashboard() {
     )
 
     const [loading, setLoading] = useState(false)
+
+    const [resumeHistory, setResumeHistory] =
+        useState<any[]>([])
+
+
+    useEffect(() => {
+
+        fetchResumeHistory()
+
+    }, [])
+
+
+    const fetchResumeHistory = async () => {
+
+        try {
+
+            const token = localStorage.getItem(
+                "token"
+            )
+
+            const response = await api.get(
+                "/auth/my-resumes",
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`
+                    }
+                }
+            )
+
+            setResumeHistory(
+                response.data
+            )
+
+        } catch (error) {
+
+            console.log(error)
+        }
+    }
 
 
     const handleUpload = async () => {
@@ -59,6 +108,8 @@ function Dashboard() {
                 response.data
             )
 
+            fetchResumeHistory()
+
         } catch (error) {
 
             console.log(error)
@@ -78,6 +129,17 @@ function Dashboard() {
 
         navigate("/")
     }
+
+
+    const chartData = resumeHistory.map(
+        (
+            resume,
+            index
+        ) => ({
+            name: `Resume ${index + 1}`,
+            score: resume.ats_score
+        })
+    )
 
 
     return (
@@ -149,6 +211,116 @@ function Dashboard() {
                     p-8
                 "
             >
+
+                <div
+                    className="
+                        grid
+                        md:grid-cols-3
+                        gap-6
+                        mb-8
+                    "
+                >
+
+                    <div
+                        className="
+                            bg-slate-900
+                            border
+                            border-slate-800
+                            rounded-2xl
+                            p-6
+                        "
+                    >
+
+                        <h2
+                            className="
+                                text-slate-400
+                                mb-2
+                            "
+                        >
+                            Total Uploads
+                        </h2>
+
+                        <h1
+                            className="
+                                text-5xl
+                                font-bold
+                            "
+                        >
+                            {resumeHistory.length}
+                        </h1>
+
+                    </div>
+
+
+                    <div
+                        className="
+                            bg-slate-900
+                            border
+                            border-slate-800
+                            rounded-2xl
+                            p-6
+                        "
+                    >
+
+                        <h2
+                            className="
+                                text-slate-400
+                                mb-2
+                            "
+                        >
+                            Latest ATS Score
+                        </h2>
+
+                        <h1
+                            className="
+                                text-5xl
+                                font-bold
+                                text-blue-400
+                            "
+                        >
+                            {
+                                result?.ats_score || 0
+                            }%
+                        </h1>
+
+                    </div>
+
+
+                    <div
+                        className="
+                            bg-slate-900
+                            border
+                            border-slate-800
+                            rounded-2xl
+                            p-6
+                        "
+                    >
+
+                        <h2
+                            className="
+                                text-slate-400
+                                mb-2
+                            "
+                        >
+                            Skills Found
+                        </h2>
+
+                        <h1
+                            className="
+                                text-5xl
+                                font-bold
+                                text-green-400
+                            "
+                        >
+                            {
+                                result?.skills?.length || 0
+                            }
+                        </h1>
+
+                    </div>
+
+                </div>
+
 
                 <div
                     className="
@@ -418,6 +590,160 @@ function Dashboard() {
                         </div>
                     )
                 }
+
+
+                <div
+                    className="
+                        bg-slate-900
+                        border
+                        border-slate-800
+                        rounded-2xl
+                        p-8
+                        mt-8
+                    "
+                >
+
+                    <h2
+                        className="
+                            text-2xl
+                            font-bold
+                            mb-6
+                        "
+                    >
+                        Resume History
+                    </h2>
+
+                    <div className="space-y-4">
+
+                        {
+                            resumeHistory.map(
+                                (resume) => (
+
+                                    <div
+                                        key={resume.id}
+                                        className="
+                                            bg-slate-800
+                                            rounded-xl
+                                            p-4
+                                            flex
+                                            justify-between
+                                            items-center
+                                        "
+                                    >
+
+                                        <div>
+
+                                            <h3
+                                                className="
+                                                    font-semibold
+                                                "
+                                            >
+                                                {resume.file_name}
+                                            </h3>
+
+                                            <p
+                                                className="
+                                                    text-slate-400
+                                                    text-sm
+                                                "
+                                            >
+                                                ATS Score:
+                                                {" "}
+                                                {resume.ats_score}%
+                                            </p>
+
+                                        </div>
+
+
+                                        <div
+                                            className="
+                                                text-blue-400
+                                                font-bold
+                                            "
+                                        >
+                                            {
+                                                resume.skills?.length || 0
+                                            }
+                                            {" "}
+                                            skills
+                                        </div>
+
+                                    </div>
+                                )
+                            )
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    className="
+                        bg-slate-900
+                        border
+                        border-slate-800
+                        rounded-2xl
+                        p-8
+                        mt-8
+                    "
+                >
+
+                    <h2
+                        className="
+                            text-2xl
+                            font-bold
+                            mb-6
+                        "
+                    >
+                        ATS Score Analytics
+                    </h2>
+
+                    <div
+                        className="
+                            h-[400px]
+                        "
+                    >
+
+                        <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                        >
+
+                            <LineChart
+                                data={chartData}
+                            >
+
+                                <CartesianGrid
+                                    strokeDasharray="3 3"
+                                    stroke="#334155"
+                                />
+
+                                <XAxis
+                                    dataKey="name"
+                                    stroke="#94a3b8"
+                                />
+
+                                <YAxis
+                                    stroke="#94a3b8"
+                                />
+
+                                <Tooltip />
+
+                                <Line
+                                    type="monotone"
+                                    dataKey="score"
+                                    stroke="#3b82f6"
+                                    strokeWidth={4}
+                                />
+
+                            </LineChart>
+
+                        </ResponsiveContainer>
+
+                    </div>
+
+                </div>
 
             </div>
 

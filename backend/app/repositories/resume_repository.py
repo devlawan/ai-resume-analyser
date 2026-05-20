@@ -71,3 +71,13 @@ class ResumeRepository:
         db.refresh(resume)
 
         return resume
+    
+    @staticmethod
+    def get_user_resumes(
+        db: Session,
+        user_id
+    ):
+
+        return db.query(Resume).filter(
+            Resume.user_id == user_id
+        ).all()
