@@ -54,3 +54,7 @@ class Resume(Base):
         JSONB,
         nullable=True
     )
+    ai_feedback = Column(
+    Text,
+    nullable=True
+    )

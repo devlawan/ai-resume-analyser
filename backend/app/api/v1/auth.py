@@ -43,6 +43,10 @@ from app.services.ats_service import (
     ATSService
 )
 
+from app.services.ai_service import (
+    AIResumeService
+)
+
 
 router = APIRouter(
     prefix="/auth",
@@ -200,11 +204,22 @@ def upload_resume(
         analysis
     )
 
+    ai_feedback = AIResumeService.analyze_resume(
+        parsed_text
+    )
+
+    ResumeRepository.update_ai_feedback(
+        db,
+        resume,
+        ai_feedback
+    )
+
     return {
         "message": "Resume uploaded successfully",
         "resume_id": str(resume.id),
         "file_name": resume.file_name,
         "ats_score": analysis["ats_score"],
         "skills": analysis["skills"],
-        "missing_skills": analysis["missing_skills"]
+        "missing_skills": analysis["missing_skills"],
+        "ai_feedback": ai_feedback
     }

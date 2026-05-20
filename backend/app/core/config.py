@@ -17,6 +17,8 @@ class Settings(BaseSettings):
 
     REFRESH_TOKEN_EXPIRE_DAYS: int
 
+    OPENAI_API_KEY: str
+
     class Config:
         env_file = ".env"
 

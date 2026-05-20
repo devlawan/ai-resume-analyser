@@ -56,3 +56,18 @@ class ResumeRepository:
         db.refresh(resume)
 
         return resume
+
+    @staticmethod
+    def update_ai_feedback(
+        db: Session,
+        resume: Resume,
+        ai_feedback: str
+    ):
+
+        resume.ai_feedback = ai_feedback
+
+        db.commit()
+
+        db.refresh(resume)
+
+        return resume
