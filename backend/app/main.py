@@ -1,13 +1,23 @@
 from fastapi import FastAPI
 
-from app.core.config import settings
+from fastapi.middleware.cors import (
+    CORSMiddleware
+)
 
-from app.api.v1.auth import router as auth_router
+from app.api.v1.auth import (
+    router as auth_router
+)
 
+app = FastAPI()
 
-app = FastAPI(
-    title=settings.APP_NAME,
-    version="1.0.0"
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(
@@ -17,8 +27,8 @@ app.include_router(
 
 
 @app.get("/")
-async def root():
+def root():
 
     return {
-        "message": "API Running"
+        "message": "AI Resume Analyzer API"
     }
