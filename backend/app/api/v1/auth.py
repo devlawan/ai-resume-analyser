@@ -18,6 +18,8 @@ from app.core.security import (
 )
 
 
+from app.api.deps import get_current_user
+
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"]
@@ -101,4 +103,15 @@ def login_user(
     return {
         "access_token": token,
         "token_type": "bearer"
+    }
+
+@router.get("/me")
+def get_me(
+    current_user = Depends(get_current_user)
+):
+
+    return {
+        "id": str(current_user.id),
+        "email": current_user.email,
+        "full_name": current_user.full_name
     }
