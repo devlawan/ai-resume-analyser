@@ -1,5 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    UploadFile,
+    File
+)
+
 from sqlalchemy.orm import Session
+
+import shutil
+import uuid
 
 from app.schemas.auth import (
     UserRegister,
@@ -9,6 +19,10 @@ from app.schemas.auth import (
 
 from app.repositories.user_repository import UserRepository
 
+from app.repositories.resume_repository import (
+    ResumeRepository
+)
+
 from app.db.dependencies import get_db
 
 from app.core.security import (
@@ -17,15 +31,12 @@ from app.core.security import (
     create_access_token
 )
 
-
 from app.api.deps import get_current_user
 
-from fastapi import UploadFile, File
+from app.services.pdf_parser import (
+    PDFParserService
+)
 
-import shutil
-import uuid
-
-from app.repositories.resume_repository import ResumeRepository
 
 router = APIRouter(
     prefix="/auth",
@@ -112,6 +123,7 @@ def login_user(
         "token_type": "bearer"
     }
 
+
 @router.get("/me")
 def get_me(
     current_user = Depends(get_current_user)
@@ -122,6 +134,7 @@ def get_me(
         "email": current_user.email,
         "full_name": current_user.full_name
     }
+
 
 @router.post("/upload-resume")
 def upload_resume(
@@ -159,6 +172,18 @@ def upload_resume(
             "file_name": file.filename,
             "file_path": file_path
         }
+    )
+
+    parsed_text = PDFParserService.extract_text(
+        file_path
+    )
+    print(parsed_text)
+
+
+    ResumeRepository.update_resume_text(
+        db,
+        resume,
+        parsed_text
     )
 
     return {

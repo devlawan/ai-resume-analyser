@@ -5,6 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from app.db.base import Base
 
+from sqlalchemy import Text
 
 class Resume(Base):
 
@@ -30,4 +31,8 @@ class Resume(Base):
     file_path = Column(
         String,
         nullable=False
+    )
+    parsed_text = Column(
+    Text,
+    nullable=True
     )
